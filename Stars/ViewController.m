@@ -7,22 +7,39 @@
 //
 
 #import "ViewController.h"
+#import "ArtistManager.h"
+#import "Artist.h"
 
 @interface ViewController ()
-
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *label;
+@property (nonatomic, strong) ArtistManager *manager;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  // Do any additional setup after loading the view, typically from a nib.
+  [self setupArtist];
 }
 
+// lazy initialization
+- (ArtistManager *)manager {
+  if (!_manager) {
+    _manager = [[ArtistManager alloc] init];
+  }
+  return _manager;
+}
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+- (void)setupArtist {
+  Artist *artist = [self.manager randomArtist];
+  self.imageView.image = artist.artistImage;
+  self.label.text = artist.name;
+  [self.label sizeToFit];
+}
+
+- (IBAction)randomArtist:(UIButton *)sender {
+  [self setupArtist];
 }
 
 
